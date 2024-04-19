@@ -21,6 +21,10 @@ namespace Store
 
     public class Employee : Person
     {
+        public Employee() :base()
+        {
+            HasManagerRights = false;
+        }
         public Guid EmployeeId { get; private set; }
         public bool HasManagerRights { get; set; }
         public float HourlyWage { get; set; }

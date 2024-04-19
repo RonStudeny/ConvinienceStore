@@ -37,6 +37,7 @@ namespace Store
     public class Transaction
     {
         public Store InStore { get; set; }
+        public Employee Cashier { get; set; }
         public Person Customer { get; set; }
         public Item[] PurchasedItems { get; set; }
         public DateTime DateOfPurchase { get; set; }
