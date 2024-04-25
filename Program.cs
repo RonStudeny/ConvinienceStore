@@ -29,17 +29,17 @@ namespace Store
             item1.Price = 0f;
 
             // STORE TEMPLATE
-            Store store = new Store();
-            store.Name = "";
-            store.Employees = new List<Employee>();
-            store.Customers = new List<Person>();
-            store.ItemsAvailable = new List<Item>();
+            Store store1 = new Store();
+            store1.Name = "";
+            store1.Employees = new List<Employee>();
+            store1.Customers = new List<Person>();
+            store1.ItemsAvailable = new List<Item>();
 
 
 
             // TRANSACTION TEMPLATE
             Transaction transaction = new Transaction();
-            transaction.InStore = store;
+            transaction.InStore = store1;
             transaction.Customer = transaction.InStore.Customers[0];
             transaction.PurchasedItems = new Item[] { transaction.InStore.ItemsAvailable[0]};
             transaction.DateOfPurchase = DateTime.Now;
@@ -124,6 +124,79 @@ namespace Store
             bread.Firm = "Lidl";
             bread.ExpirationDate = DateTime.Today.AddDays(20);
             bread.Price = 53f;
+
+            // GROCCERY ITEM INSTANCES
+
+            Item toiletPaper = new Item();
+            toiletPaper.Name = "Toilet paper";
+            toiletPaper.ProductType = "Sanitary";
+            toiletPaper.Description = "A pack of 6 rolls of silky smooth toilet paper";
+            toiletPaper.Firm = "D&M";
+            toiletPaper.ExpirationDate = DateTime.Today.AddYears(20);
+            toiletPaper.Price = 220f;
+
+
+            Item soap = new Item();
+            soap.Name = "Hand Soap";
+            soap.ProductType = "Sanitary";
+            soap.Description = "Hand sanitization soap for bathrooms";
+            soap.Firm = "D&M";
+            soap.ExpirationDate = DateTime.Today.AddYears(20);
+            soap.Price = 89.90f;
+
+            Item brush = new Item();
+            brush.Name = "Tooth brush";
+            brush.ProductType = "Sanitary";
+            brush.Description = "A manual tooth brush";
+            brush.Firm = "D&M";
+            brush.ExpirationDate = DateTime.Today.AddYears(2);
+            brush.Price = 49.90f;
+
+            // TOOL ITEM INSTANCES
+
+            Item drill = new Item();
+            drill.Name = "Hand Drill";
+            drill.ProductType = "Tool";
+            drill.Description = "A basic battery-powered hand drill";
+            drill.Firm = "D&M";
+            drill.ExpirationDate = DateTime.Today.AddYears(2);
+            drill.Price = 3200f;
+
+            Item wrench = new Item();
+            wrench.Name = "Wrench";
+            wrench.ProductType = "Tool";
+            wrench.Description = "Standard adjustable wrench";
+            wrench.Firm = "D&M";
+            wrench.ExpirationDate = DateTime.Today.AddYears(5);
+            wrench.Price = 850f;
+
+            Item shovel = new Item();
+            shovel.Name = "Garedening Shovel";
+            shovel.ProductType = "Tool";
+            shovel.Description = "A shovel fit for gardening work";
+            shovel.Firm = "D&M";
+            shovel.ExpirationDate = DateTime.Today.AddYears(2);
+            shovel.Price = 450f;
+
+            // STORE INSTANCES
+            Store lidl = new Store();
+            lidl.Name = "Lidl";
+            lidl.Employees = new List<Employee> { employeeDominik };
+            lidl.Customers = new List<Person>() { pepa, tonda };
+            lidl.ItemsAvailable = new List<Item>() { apple, yogurt, bread };
+
+            Store dm = new Store();
+            dm.Name = "D&M";
+            dm.Employees = new List<Employee> { employeeRon };
+            dm.Customers = new List<Person>() { ondra, lukas };
+            dm.ItemsAvailable = new List<Item>() { toiletPaper, brush, soap };
+
+            Store hornbach = new Store();
+            hornbach.Name = "Hornbach";
+            hornbach.Employees = new List<Employee> { employeeDominik };
+            hornbach.Customers = new List<Person>() { pepa, tonda };
+            hornbach.ItemsAvailable = new List<Item>() { apple, yogurt, bread };
+
 
 
         }
