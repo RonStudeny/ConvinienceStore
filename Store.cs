@@ -27,9 +27,17 @@ namespace Store
         public string Description { get; set; }
         public string Firm { get; set; }
         public DateTime ExpirationDate { get; set; }
-        public int BarCodeID { get; set; }
+        public Guid ItemId { get; set; }
         public float Price { get; set; }
         public int LegalAge { get; set; } // set to the year required to buy (energy drink: 15, alcohol: 18...)
+        public bool IsExpired
+        {
+            get
+            {
+                if (ExpirationDate > DateTime.Today) return true;
+                else return false;
+            }
+        }
 
         
     }
@@ -39,9 +47,18 @@ namespace Store
         public Store InStore { get; set; }
         public Employee Cashier { get; set; }
         public Person Customer { get; set; }
-        public Item[] PurchasedItems { get; set; }
+        public List<Item> PurchasedItems { get; set; }
         public DateTime DateOfPurchase { get; set; }
-        public float TotalPrice { get; set; } // implement by func.
+        public float TotalPrice
+        {
+            get
+            {
+                float res = 0;
+                for (int i = 0; i < PurchasedItems.Count; i++)
+                    res += PurchasedItems[i].Price;
+                return res;
+            }
+        }
 
     }
 
