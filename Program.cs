@@ -11,42 +11,42 @@ namespace Store
             {
                 Name = "Pepa",
                 Surname = "Zakaznicky",
-                DoB = GetRandomDoB()
+                DoB = DateTime.Parse("25.2.1998")
             };
 
             Person tonda = new Person
             {
                 Name = "Tonda",
                 Surname = "Zapotocky",
-                DoB = GetRandomDoB()
+                DoB = DateTime.Parse("18.4.2008")
             };
 
             Person ondra = new Person
             {
                 Name = "Ondra",
                 Surname = "Vopršálek",
-                DoB = GetRandomDoB()
+                DoB = DateTime.Parse("11.3.2001")
             };
 
             Person lukas = new Person
             {
                 Name = "Lukas",
                 Surname = "Sustr",
-                DoB = GetRandomDoB()
+                DoB = DateTime.Parse("13.11.1985")
             };
 
             Person jonas = new Person
             {
                 Name = "Jonas",
                 Surname = "Ruzovi",
-                DoB = GetRandomDoB()
+                DoB = DateTime.Parse("25.2.1998")
             };
 
             Person walt = new Person
             {
                 Name = "Walter",
                 Surname = "Heisenberg",
-                DoB = GetRandomDoB()
+                DoB = DateTime.Parse("16.7.1980")
             };
 
             // EMPLOYEE INSTANCES
@@ -54,7 +54,7 @@ namespace Store
             {
                 Name = "Krystof",
                 Surname = "Rurcnik",
-                DoB = GetRandomDoB(),
+                DoB = DateTime.Parse("16.8.2004"),
                 HourlyWage = 100,
                 HoursWorked = 0.5f
             };
@@ -63,7 +63,7 @@ namespace Store
             {
                 Name = "Dominik",
                 Surname = "Anlauf",
-                DoB = GetRandomDoB(),
+                DoB = DateTime.Parse("3.1.2002"),
                 HourlyWage = 175,
                 HoursWorked = 35
             };
@@ -72,16 +72,17 @@ namespace Store
             {
                 Name = "Ron",
                 Surname = "Studeny",
-                DoB = GetRandomDoB(),
+                DoB = DateTime.Parse("19.5.2003"),
                 HourlyWage = 200,
-                HoursWorked = 14
+                HoursWorked = 14,
+                HasManagerRights = true,
+                
             };
 
-            // FOOD ITEM INSTANCES
             Item apple = new Item
             {
                 Name = "Apple",
-                ProductType = "Food",
+                ProductType = "Grocery",
                 Description = "It's an apple",
                 Firm = "N/A",
                 ExpirationDate = DateTime.Today.AddDays(3),
@@ -91,7 +92,7 @@ namespace Store
             Item yogurt = new Item
             {
                 Name = "Yogurt",
-                ProductType = "Food",
+                ProductType = "Grocery",
                 Description = "White yogurt, 2.7% fat",
                 Firm = "Olma",
                 ExpirationDate = DateTime.Today.AddDays(14),
@@ -101,19 +102,30 @@ namespace Store
             Item bread = new Item
             {
                 Name = "Bread",
-                ProductType = "Food",
+                ProductType = "Grocery",
                 Description = "Standard consumer grade bread",
                 Firm = "Lidl",
                 ExpirationDate = DateTime.Today.AddDays(20),
                 Price = 53f
             };
 
-            // GROCERY ITEM INSTANCES
+            Item rum = new Item
+            {
+                Name = "Bozkov - Tuzemsky rum",
+                ProductType = "Grocery",
+                Description = "Cheap booze to mix with coke or whatever",
+                Firm = "Bozkov",
+                ExpirationDate = DateTime.Today.AddYears(15),
+                Price = 125f,
+                LegalAge = 18
+
+            };
+
             Item toiletPaper = new Item
             {
                 Name = "Toilet paper",
-                ProductType = "Sanitary",
-                Description = "A pack of 6 rolls of silky smooth toilet paper",
+                ProductType = "Scott",
+                Description = "A pack of 8 rolls of silky smooth toilet paper",
                 Firm = "D&M",
                 ExpirationDate = DateTime.Today.AddYears(20),
                 Price = 220f
@@ -124,7 +136,7 @@ namespace Store
                 Name = "Hand Soap",
                 ProductType = "Sanitary",
                 Description = "Hand sanitization soap for bathrooms",
-                Firm = "D&M",
+                Firm = "Softsoap",
                 ExpirationDate = DateTime.Today.AddYears(20),
                 Price = 89.90f
             };
@@ -134,78 +146,69 @@ namespace Store
                 Name = "Tooth brush",
                 ProductType = "Sanitary",
                 Description = "A manual tooth brush",
-                Firm = "D&M",
+                Firm = "Colgate",
                 ExpirationDate = DateTime.Today.AddYears(2),
                 Price = 49.90f
             };
 
-            // TOOL ITEM INSTANCES
-            Item drill = new Item
-            {
-                Name = "Hand Drill",
-                ProductType = "Tool",
-                Description = "A basic battery-powered hand drill",
-                Firm = "D&M",
-                ExpirationDate = DateTime.Today.AddYears(2),
-                Price = 3200f
-            };
 
-            Item wrench = new Item
-            {
-                Name = "Wrench",
-                ProductType = "Tool",
-                Description = "Standard metalic wrench",
-                Firm = "D&M",
-                ExpirationDate = DateTime.Today.AddYears(5),
-                Price = 850f
-            };
-
-            Item shovel = new Item
-            {
-                Name = "Gardening Shovel",
-                ProductType = "Tool",
-                Description = "A shovel fit for gardening work",
-                Firm = "D&M",
-                ExpirationDate = DateTime.Today.AddYears(2),
-                Price = 450f
-            };
-
-            // STORE INSTANCES
             Store lidl = new Store
             {
                 Name = "Lidl",
-                Employees = new List<Employee> { employeeDominik },
-                Customers = new List<Person> { pepa, tonda },
-                ItemsAvailable = new List<Item> { apple, yogurt, bread }
+                Employees = { employeeDominik, employeeRon, employeeKrystof },
+                Customers = { pepa, tonda, ondra, lukas, jonas, walt },
+                ItemsAvailable = { apple, yogurt, bread, rum, toiletPaper, brush, soap }
             };
 
-            Store dm = new Store
+
+
+            Transaction transaction1 = new Transaction() // standard transaction
             {
-                Name = "D&M",
-                Employees = new List<Employee> { employeeRon },
-                Customers = new List<Person> { ondra, lukas },
-                ItemsAvailable = new List<Item> { toiletPaper, brush, soap }
+                Customer = pepa,
+                Cashier = employeeDominik,
+                PurchasedItems = { yogurt, yogurt, bread },
             };
 
-            Store hornbach = new Store
+            Transaction transaction2 = new Transaction() // illegal purchase of alcohol
             {
-                Name = "Hornbach",
-                Employees = new List<Employee> { employeeDominik },
-                Customers = new List<Person> { pepa, tonda },
-                ItemsAvailable = new List<Item> { drill, shovel, wrench }
+                Customer = tonda,
+                Cashier = employeeKrystof,
+                PurchasedItems = { rum, rum },
             };
 
-            Transaction transaction1 = new Transaction()
+            Transaction transaction3 = new Transaction() // legal but un-verified purchase of alcohol
             {
-                InStore = lidl,
-                Customer = lidl.Customers[0],
-                Cashier = lidl.Employees[0],
-                PurchasedItems = { lidl.ItemsAvailable[0], lidl.ItemsAvailable[0], lidl.ItemsAvailable[2] },
-                DateOfPurchase = DateTime.Now
+                Customer = jonas,
+                Cashier = employeeDominik,
+                PurchasedItems = { rum, brush, bread },
             };
 
+            Transaction transaction4 = new Transaction() // legal and verofied purchase of alcohol
+            {
+                Customer = walt,
+                Cashier = employeeRon,
+                PurchasedItems = { rum, yogurt, yogurt, bread, toiletPaper },
+            };
+           
+            lidl.Transactions.Add(transaction1);
+            lidl.Transactions.Add(transaction2);
+            lidl.Transactions.Add(transaction3);
+            lidl.Transactions.Add(transaction4);
+
+            foreach (var transaction in GetIlllegalPurchases(lidl))
+            {
+                Console.WriteLine(transaction.TransactionID);
+            }
+
+        }
 
 
+        static List<Transaction> GetIlllegalPurchases(Store store)
+        {
+
+            return store.Transactions
+                .Where(transaction => transaction.PurchasedItems.Any(item => item.LegalAge > transaction.Customer.Age))
+                .ToList();
         }
 
         public static DateTime GetRandomDoB()

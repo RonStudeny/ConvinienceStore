@@ -20,7 +20,7 @@ namespace Store
             get
             {
                 int res = DateTime.Today.Year - DoB.Year;
-                if (DoB.Date > DateTime.Today.AddYears(-res)) res--; // substract a year if they hadn't have birthday yet
+                if (DoB.Date > DateTime.Today.AddYears(-res)) res--; // substract a year if they haven't had birthday yet
                 return res;
             }
         }
