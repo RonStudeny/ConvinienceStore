@@ -24,7 +24,11 @@ namespace Store
                 return res;
             }
         }
-       
+        public override string ToString()
+        {
+            return $"Name: {Name}, Surname: {Surname}, Age: {Age}, DoB: {DoB}";
+        }
+
     }
 
     public class Employee : Person
@@ -32,6 +36,7 @@ namespace Store
         public Employee() :base()
         {
             HasManagerRights = false;
+            EmployeeId = Guid.NewGuid();
         }
         public Guid EmployeeId { get; private set; }
         public bool HasManagerRights { get; set; }
@@ -43,9 +48,14 @@ namespace Store
             {
                 return HoursWorked * HourlyWage;
             }
-        } 
-        
-        
+        }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}, Surname: {Surname}, Age: {Age}, DoB: {DoB}, Employee ID: {EmployeeId}";
+        }
+
+
     }
 
 

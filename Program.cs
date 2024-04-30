@@ -1,5 +1,4 @@
-﻿using Store;
-namespace Store
+﻿namespace Store
 {
     static class Script
     {
@@ -49,7 +48,6 @@ namespace Store
                 DoB = DateTime.Parse("16.7.1980")
             };
 
-            // EMPLOYEE INSTANCES
             Employee employeeKrystof = new Employee
             {
                 Name = "Krystof",
@@ -76,7 +74,7 @@ namespace Store
                 HourlyWage = 200,
                 HoursWorked = 14,
                 HasManagerRights = true,
-                
+
             };
 
             Item apple = new Item
@@ -189,17 +187,62 @@ namespace Store
                 Cashier = employeeRon,
                 PurchasedItems = { rum, yogurt, yogurt, bread, toiletPaper },
             };
-           
+
             lidl.Transactions.Add(transaction1);
             lidl.Transactions.Add(transaction2);
             lidl.Transactions.Add(transaction3);
             lidl.Transactions.Add(transaction4);
 
-            foreach (var transaction in GetIlllegalPurchases(lidl))
-                Console.WriteLine($"Illegal: {transaction.TransactionID}");
 
-            foreach (var transaction in GetTransactionsOverAPrice(lidl, 250))
-                Console.WriteLine($"Above {250}: {transaction.TransactionID}");
+
+            #region QUERY TESTING PROGRAM
+            bool loop = true;
+            while (loop)
+            {
+                foreach (var item in GetItemsSoldByEmployee(lidl, employeeRon))
+                {
+                    Console.WriteLine(item);
+                }
+                Console.ReadLine();
+
+                Console.Clear();
+                Console.WriteLine("Welcome to the store database, select an action:");
+                Console.WriteLine("1. Print out the whole store");
+                Console.WriteLine("2. Query menu");
+                Console.WriteLine("3. Quit");
+                if (int.TryParse(Console.ReadLine(), out int action))
+                {
+                    switch (action)
+                    {
+                        case 1:
+                            Console.WriteLine(lidl.ToString());
+                            Console.ReadLine();
+                            break;
+                        case 2:
+                            Console.WriteLine("Choose a Query:");
+                            Console.WriteLine("1. Query illegal alcohol purchases");
+                            Console.WriteLine("2. Query transactions over the price of 250");
+                            Console.WriteLine();
+
+                            break;
+                        case 3:
+                            Environment.Exit(0);
+                            break;
+                    }
+
+                }
+                else Console.WriteLine("Invalid input, please type a corresponding number");
+
+            }
+
+            #endregion
+
+
+            foreach (var transaction in GetIlllegalPurchases(lidl))
+                Console.WriteLine(transaction);
+
+            //foreach (var transaction in GetTransactionsOverAPrice(lidl, 250))
+            //    Console.WriteLine(transaction.Cashier);
 
 
         }
@@ -216,7 +259,17 @@ namespace Store
         static List<Transaction> GetTransactionsOverAPrice(Store store, float price)
         {
             return store.Transactions
-                .Where(transaction => transaction.TotalPrice > price).ToList();
+                .Where(transaction => transaction.TotalPrice > price)
+                .ToList();
+        }
+
+
+        static List<Item> GetItemsSoldByEmployee(Store store, Employee employee)
+        {
+            return store.Transactions
+                        .Where(transaction => transaction.Cashier == employee)
+                        .SelectMany(transaction => transaction.PurchasedItems)
+                        .ToList();
         }
 
         public static DateTime GetRandomDoB()

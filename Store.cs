@@ -21,6 +21,14 @@ namespace Store
         public List<Item> ItemsAvailable { get; set; }
         public List<Transaction> Transactions { get; set; }
 
+        public override string ToString()
+        {
+            return $"---Store Name---\n{Name}\n\n" +
+                   $"---Employees---\n{string.Join("\n", Employees)}\n\n" +
+                   $"---Customers---\n{string.Join("\n", Customers)}\n\n" +
+                   $"---Items Available---\n{string.Join("\n", ItemsAvailable)}\n\n" +
+                   $"---Transactions---\n{string.Join("\n\n", Transactions)}\n\n";
+        }
     }
 
     public class Item
@@ -47,7 +55,12 @@ namespace Store
                 else return false;
             }
         }
-        
+
+        public override string ToString()
+        {
+            return $"Name: {Name}, ProductType: {ProductType}, Price: {Price}CZK, BarCodeID: {BarCodeID}";
+        }
+
     }
 
     public class Transaction
@@ -63,15 +76,25 @@ namespace Store
         public List<Item> PurchasedItems { get; set; }
         public DateTime DateOfPurchase { get; set; }
         public Guid TransactionID { get; set; }
-        public float TotalPrice
+        public double TotalPrice
         {
             get
             {
                 float res = 0;
                 for (int i = 0; i < PurchasedItems.Count; i++)
                     res += PurchasedItems[i].Price;
-                return res;
+                return Math.Round(res, 2);
             }
+        }
+
+        public override string ToString()
+        {
+            return "Cashier: " + Cashier + "\n" +
+                   "Customer: " + Customer + "\n" +
+                   "Purchased items:\n" + string.Join("\n", PurchasedItems) + "\n" +
+                   "Date Of Purchase: " + DateOfPurchase + "\n" +
+                   "Transaction ID: " + TransactionID + "\n" +
+                   "Total Price: " + TotalPrice + "CZK";
         }
 
     }
