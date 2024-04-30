@@ -196,9 +196,11 @@ namespace Store
             lidl.Transactions.Add(transaction4);
 
             foreach (var transaction in GetIlllegalPurchases(lidl))
-            {
-                Console.WriteLine(transaction.TransactionID);
-            }
+                Console.WriteLine($"Illegal: {transaction.TransactionID}");
+
+            foreach (var transaction in GetTransactionsOverAPrice(lidl, 250))
+                Console.WriteLine($"Above {250}: {transaction.TransactionID}");
+
 
         }
 
@@ -209,6 +211,12 @@ namespace Store
             return store.Transactions
                 .Where(transaction => transaction.PurchasedItems.Any(item => item.LegalAge > transaction.Customer.Age))
                 .ToList();
+        }
+
+        static List<Transaction> GetTransactionsOverAPrice(Store store, float price)
+        {
+            return store.Transactions
+                .Where(transaction => transaction.TotalPrice > price).ToList();
         }
 
         public static DateTime GetRandomDoB()
