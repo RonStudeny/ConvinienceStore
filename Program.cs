@@ -76,6 +76,14 @@
                 HasManagerRights = true,
 
             };
+            Employee employeePetr = new Employee
+            {
+                Name = "Petr",
+                Surname = "Holy",
+                DoB = DateTime.Parse("28.9.1999"),
+                HourlyWage = 155,
+                HoursWorked = 40
+            };
 
             Item apple = new Item
             {
@@ -153,8 +161,8 @@
             Store lidl = new Store
             {
                 Name = "Lidl",
-                Employees = { employeeDominik, employeeRon, employeeKrystof },
-                Customers = { pepa, tonda, ondra, lukas, jonas, walt },
+                Employees = { employeeDominik, employeeRon, employeeKrystof, employeePetr },
+                Customers = { pepa, tonda, ondra, lukas, jonas, walt, employeePetr },
                 ItemsAvailable = { apple, yogurt, bread, rum, toiletPaper, brush, soap }
             };
 
@@ -199,12 +207,6 @@
             bool loop = true;
             while (loop)
             {
-                foreach (var item in GetItemsSoldByEmployee(lidl, employeeRon))
-                {
-                    Console.WriteLine(item);
-                }
-                Console.ReadLine();
-
                 Console.Clear();
                 Console.WriteLine("Welcome to the store database, select an action:");
                 Console.WriteLine("1. Print out the whole store");
@@ -219,11 +221,67 @@
                             Console.ReadLine();
                             break;
                         case 2:
-                            Console.WriteLine("Choose a Query:");
-                            Console.WriteLine("1. Query illegal alcohol purchases");
-                            Console.WriteLine("2. Query transactions over the price of 250");
-                            Console.WriteLine();
-
+                            bool chooseQuery = true;
+                            while (chooseQuery)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Choose a Query:");
+                                Console.WriteLine("1. Query illegal age-restricted purchases");
+                                Console.WriteLine("2. Query transactions over a given price");
+                                Console.WriteLine("3. Get items sold by a specific employee");
+                                Console.WriteLine("4. Get items bought by a specific customer");
+                                Console.WriteLine("5. Get employees that are also customers");
+                                if (int.TryParse(Console.ReadLine(), out int query))
+                                {
+                                    if (query == 1)
+                                    {
+                                        PrintCollection(GetIlllegalPurchases(lidl));
+                                        chooseQuery = false;
+                                    } // Illegal purchases
+                                    if (query == 2)
+                                    {
+                                        Console.WriteLine("Please enter the treshold price");
+                                        if (int.TryParse(Console.ReadLine(), out int price))
+                                        {
+                                            PrintCollection(GetTransactionsOverAPrice(lidl, price));
+                                            chooseQuery = false;
+                                        }                                            
+                                        else Console.WriteLine("Invalid input, enter a valid ammount");
+                                    } // Set price transactions
+                                    if (query == 3)
+                                    {
+                                        Console.WriteLine("Choose the employee");
+                                        for (int i = 0; i < lidl.Employees.Count; i++)
+                                            Console.WriteLine((i + 1) + " " + lidl.Employees[i].Name);
+                                        if (int.TryParse(Console.ReadLine(), out int employeeNum) && employeeNum-1 >= 0 && employeeNum-1 < lidl.Employees.Count)
+                                        {
+                                            PrintCollection(GetItemsSoldByEmployee(lidl, lidl.Employees[employeeNum-1]));
+                                            chooseQuery = false;
+                                        }
+                                        else Console.WriteLine("Invalid input, enter a corresponding employee number");
+                                    } // Items sold by employee
+                                    if (query == 4)
+                                    {
+                                        Console.WriteLine("Choose the customer");
+                                        for (int i = 0; i < lidl.Customers.Count; i++)
+                                            Console.WriteLine((i + 1) + " " + lidl.Customers[i].Name);
+                                        if (int.TryParse(Console.ReadLine(), out int customerNum) && customerNum-1 >= 0 && customerNum-1 < lidl.Customers.Count)
+                                        {
+                                            PrintCollection(GetItemsBoughtByCustomer(lidl, lidl.Customers[customerNum-1]));
+                                            chooseQuery = false;
+                                        }
+                                        else Console.WriteLine("Invalid input, enter a corresponding customer number");
+                                    } // Items bought by customer
+                                    if (query == 5) // Employees that are also customers
+                                        PrintCollection(GetEmployeesThatAreCustomers(lidl));
+                                    Console.ReadLine();
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid input, please write a corresponding number");
+                                    Console.ReadLine();
+                                }
+                            }
                             break;
                         case 3:
                             Environment.Exit(0);
@@ -238,15 +296,15 @@
             #endregion
 
 
-            foreach (var transaction in GetIlllegalPurchases(lidl))
-                Console.WriteLine(transaction);
-
-            //foreach (var transaction in GetTransactionsOverAPrice(lidl, 250))
-            //    Console.WriteLine(transaction.Cashier);
-
-
         }
 
+        static void PrintCollection<T>(List<T> list)
+        {
+            foreach (var item in list)
+            {
+                Console.WriteLine(item.ToString());
+            }
+        }
 
         static List<Transaction> GetIlllegalPurchases(Store store)
         {
@@ -271,6 +329,25 @@
                         .SelectMany(transaction => transaction.PurchasedItems)
                         .ToList();
         }
+
+        static List<Item> GetItemsBoughtByCustomer(Store store, Person customer)
+        {
+            return store.Transactions
+                        .Where(transaction => transaction.Customer == customer)
+                        .SelectMany(transaction => transaction.PurchasedItems)
+                        .ToList();
+        }
+
+        static List<Employee> GetEmployeesThatAreCustomers(Store store)
+        {
+            return store.Employees
+                        .Where(employee => store.Customers.Contains(employee))
+                        .ToList();
+        }
+
+
+
+
 
         public static DateTime GetRandomDoB()
         {
