@@ -9,8 +9,6 @@ Objektové modelování
 Ron Studený
 ### Contact:
 XSTUR008@studenti.czu.cz
-# Table of Contents
-* 1 [About the model](#1-about-the-model)
 
 # 1 About the model
 ## 1.1 Realisation
@@ -21,7 +19,7 @@ This model serves as an example of what an internal database/system for a convin
 The scope of this model is scaled back as not to be overcomplicated, it implements 5 classes which represent the Store itself, it's employees, customers and items, furthermore 5 queries have been implemented to demonstrate functionality of this model.<br> **No connection** to an actual database or application has been implemented.
 # 2 Model topology
 ## 2.1 Class Store
-This is the core class around which the entire system is built and it contains collections of all the remaining classes. Only 1 instance of this class exists within the model as per the [Scope](#13-scope), the model should only represents the system for a single store, however this class is implemented in such a way, that multiple stores could be created and handled within a single system.<br>
+This is the core class around which the entire system is built and it contains collections of all the remaining classes. Only 1 instance of this class exists within the model as per the **1.3 Scope**, the model should only represents the system for a single store, however this class is implemented in such a way, that multiple stores could be created and handled within a single system.<br>
 ----INSTANCE VARIABLES----<br>
 ``string Name`` - Variable containing the name of the establishment, in the event that the use of this model is expanded to facilitate multiple stores, this variable could be used for identification<br>
 ``List<Employee> Employees`` - A collection of ``Employee`` type, contains all instances of ``Employee`` class. This collection is used extensively through out the project as will be described further into the document<br>
@@ -66,3 +64,11 @@ Another core class, it represents a transaction between the store and a customer
 ``DateTime DateOfPurchase`` - Contains the date that the given instance was created on. Generated automatically using a constructor, useful for sorting, indexing.<br>
 ``Guid TransactionID`` - Automatically generated unique ID given to the transaction for identification.<br>
 ``double TotalPrice`` - Sums the ``Price`` value of each refference to an item from ``PurchasedItems`` collection, resulting in the total price paid by the customer, implemented as a getter function<.br>
+# 3 Functinality
+## 3.1 Queries
+To test out the capabilities of the model 5 queries have been implemented together with a simple service program to visualise the result of these queries in order to demonstrate it's functionality<br>
+``GetIlleGalPurchases`` - Returns a collection of ``Transaction`` type containing all the transactions that contain an ``Item`` with higher ``LegalAge`` variable then the ``Customer`` variable's ``Age`` variable<br>
+``GetTransactionsOverAPrice`` - This query accepts a float representing a desired price and returns collection of ``Transaction`` containing transactions with ``TotalPrice`` variable higher then the given price<br>
+``GetItemsSoldByEmployee`` - This query accepts a ``Employee`` parameter and returns a collection of type ``Item`` containing all the items that have benn in a transaction made by the given employee<br>
+``GetItemsSoldByCustomer`` - Similar to the previous query, accepts a ``Person`` type parameter, and returns a collection of type ``Item`` containing all the items that have benn in a transaction containing the given parameter<br>
+``GetEmployeesThatAreCustomers`` - Returns a collection of ``Employee`` type containing all those that are also contained in the ``Customers`` collection of the ``Store``<br>
